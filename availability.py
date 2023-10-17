@@ -1,10 +1,16 @@
+#Backlog items:
+# 1.Allow for open and close times to vary by day of the week
+# 2.Save the use availability files to a central location, i.e. S3 or Google Drive
+
 import streamlit as st
 import pandas as pd
 
 # Create a Streamlit web app
+st. set_page_config(layout="wide")
 st.title("Availability Scheduler")
 
 # Create a form to collect user availability data
+playerName = st.text_area("Enter your name", height=1, max_chars=30)
 st.write("Check which times you are available for each day of the week:")
 
 days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
@@ -14,7 +20,8 @@ colMonday, colTuesday, colWednesday, colThursday, colFriday, colSaturday, colSun
 openTime = 8  # 8 AM
 closeTime = 21  # 9 PM
 
-availability_data = {}
+availability_data = pd.DataFrame(columns=['day'])
+dayTracker = 1
 for day in days_of_week:
     if day == "Monday":
         with colMonday:
@@ -37,6 +44,10 @@ for day in days_of_week:
     else:
         with colSunday:
             st.subheader("Sunday")
+    #st.write("dayTracker = ", dayTracker)
+    #st.write("day = " + day)
+    availability_data.loc[dayTracker-1, 'day'] = day
+    hourTracker = 1
     for hour in range(openTime, closeTime + 1):
         # Convert the hour to 12-hour format and determine AM or PM
         if hour < 12:
@@ -69,21 +80,27 @@ for day in days_of_week:
         else:
             with colSunday:
                 availStr = st.checkbox(time_str, key=day + ", " + time_str)
-    availability_data[day, hour] = availStr
+        #st.write("hourTracker = ", hourTracker)
+        #st.write("availStr = ", availStr)
+        availability_data.loc[dayTracker-1, hourTracker] = int(availStr == True)
+        hourTracker = hourTracker + 1
+    dayTracker = dayTracker + 1
 
 # Create a submit button to save availability data to a CSV file
-availability_df = pd.DataFrame()
+#availability_df = pd.DataFrame()
 if st.button("Submit"):
-    # Create a DataFrame from the availability data
-    availability_df = pd.DataFrame(availability_data, index=[0])
 
-    # Save the DataFrame to a CSV file
-    availability_df.to_csv("user_availability.csv", index=False)
-    st.success("Your availability has been saved to user_availability.csv")
+    if playerName == "":
+        st.error('You must enter your name!')
+    else:
+        playerNameShort = playerName.replace(' ', '_')
+        # Save the DataFrame to a CSV file
+        availability_data.to_csv("~/Documents/Python Programs/matchScheduler/userData/" +playerNameShort + "_availability.csv", index=False)
+        st.success("Your availability has been saved to " + playerNameShort + "_availability.csv")
 
 # Provide a download link for the generated CSV file
-st.write("Download your availability:")
-st.markdown("[Download user_availability.csv](data:file/csv;base64, " + availability_df.to_csv().encode('utf-8').decode(
-    'utf-8') + ")")
+#st.write("Download your availability:")
+#st.markdown("[Download user_availability.csv](data:file/csv;base64, " + availability_data.to_csv().encode('utf-8').decode(
+#    'utf-8') + ")")
 
 # Note: This code will save the availability data to a local file. In a real-world scenario, you might want to store this data more securely.
