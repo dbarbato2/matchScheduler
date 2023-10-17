@@ -31,7 +31,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/userData/db_availability.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/userData/gh_availability.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/userData/kjghk_availability.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
