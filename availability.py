@@ -103,9 +103,4 @@ if st.button("Submit"):
         availability_data.to_csv("~/Documents/Python Programs/matchScheduler/userData/" +playerNameShort + "_availability.csv", index=False)
         st.success("Your availability has been saved to " + playerNameShort + "_availability.csv")
 
-# Provide a download link for the generated CSV file
-#st.write("Download your availability:")
-#st.markdown("[Download user_availability.csv](data:file/csv;base64, " + availability_data.to_csv().encode('utf-8').decode(
-#    'utf-8') + ")")
-
 # Note: This code will save the availability data to a local file. In a real-world scenario, you might want to store this data more securely.
