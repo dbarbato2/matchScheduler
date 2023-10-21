@@ -17,18 +17,14 @@ days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturda
                 'Sunday']  # Define the start and end times
 colMonday, colTuesday, colWednesday, colThursday, colFriday, colSaturday, colSunday = st.columns(7)
 
-openTime = (8, 8, 9, 8, 9, 6, 10)  # list for each day of the week, 8 = 8 AM
-closeTime = (21, 20, 21, 22, 21, 23, 20)  # list for each day of the week, 21 = 9 PM
+openTime = (6, 6, 6, 6, 6, 7, 7)  # list for each day of the week, 8 = 8 AM
+closeTime = (21, 21, 21, 21, 21, 17, 17)  # list for each day of the week, 21 = 9 PM
 minOpenTime = min(openTime)
-st.write(minOpenTime)
 maxCloseTime = max(closeTime)
-st.write(maxCloseTime)
 
 openHours = list(range(minOpenTime, maxCloseTime))
-st.write(openHours)
 openHours.insert(0, 'day')
 availability_data = pd.DataFrame(columns=[str(element) for element in openHours])
-st.write(availability_data)
 dayTracker = 1
 for day in days_of_week:
     if day == "Monday":
